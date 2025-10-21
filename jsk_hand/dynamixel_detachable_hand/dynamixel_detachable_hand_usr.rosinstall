@@ -1,0 +1,10 @@
+- git:
+    local-name: dynamixel-workbench
+    uri: https://github.com/pazeshun/dynamixel-workbench.git
+    version: dynamixel-general-hw
+
+- git:
+    local-name: DynamixelSDK
+    uri: https://github.com/ROBOTIS-GIT/DynamixelSDK.git
+    version: noetic-devel
+    
