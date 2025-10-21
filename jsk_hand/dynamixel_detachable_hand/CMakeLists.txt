@@ -12,7 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs                                                                                                                                                                              
   actionlib_msgs
   control_msgs
-  trajecotry_msgs
+  trajectory_msgs
   dynamixel_general_hw
 )
 
