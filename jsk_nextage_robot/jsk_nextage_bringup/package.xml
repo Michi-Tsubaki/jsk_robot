@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>jsk_nextage_bringup</name>
+  <version>0.0.0</version>
+  <description>The jsk_nextage_bringup package</description>
+  <maintainer email="tsubaki@jsk.t.u-tokyo.ac.jp">Michi-Tsubaki</maintainer>
+  <license>BSD</license>
+  <!-- <url type="website">http://wiki.ros.org/jsk_nextage_bringup</url> -->
+  <author email="tsubaki@jsk.t.u-tokyo.ac.jp">Michi-Tsubaki</author>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>nextage_description</depend>
+  <depend>nextage_tutorials</depend>
+  <depend>usb_cam</depend>
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

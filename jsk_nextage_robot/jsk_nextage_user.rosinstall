@@ -1,0 +1,17 @@
+- git:
+    local-name: nextage_description
+    uri: https://github.com/tork-a/rtmros_nextage.git
+    version: indigo-devel
+    path: nextage_description
+
+- git:
+    local-name: nextage_tutorials
+    uri: https://github.com/Michi-Tsubaki/rtmros_tutorials.git
+    version: tsubaki/surgery
+    path: nextage_tutorials
+
+- git:
+    local-name: robotiq
+    uri: https://github.com/Michi-Tsubaki/robotiq
+    version: offset-and-launch
+    path: robotiq_ft_sensor
