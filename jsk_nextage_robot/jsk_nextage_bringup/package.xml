@@ -10,6 +10,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>nextage_description</depend>
   <depend>nextage_tutorials</depend>
+  <depend>robotiq_ft_sensor</depend>
   <depend>usb_cam</depend>
   <export>
     <!-- Other tools can request additional information be placed here -->

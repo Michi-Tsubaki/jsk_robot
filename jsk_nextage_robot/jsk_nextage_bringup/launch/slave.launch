@@ -1,14 +1,5 @@
 <launch>
   <!-- Tested in ros-o 22.04 -->
-  <include file="$(find jsk_nextage_bringup)/launch/elp_head.launch">
-  </include>
-  
-  <include file="$(find jsk_nextage_bringup)/launch/right_ft_sensor.launch">
-  </include>
-
-  <include file="$(find jsk_nextage_bringup)/launch/ft_sensor_calib.launch">
-  </include>
-
   <param name="robot_description" textfile="$(find jsk_nextage_bringup)/urdf/JSKNextageOpen.urdf" />
 
   <node name="nextage_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
@@ -17,4 +8,14 @@
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
     <param name="use_gui" value="false" />
   </node>
+
+
+  <include file="$(find jsk_nextage_bringup)/launch/elp_head.launch" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' ">
+  </include>
+  
+  <include file="$(find jsk_nextage_bringup)/launch/right_ft_sensor.launch" >
+  </include>
+
+  <include file="$(find jsk_nextage_bringup)/launch/ft_sensor_calib.launch">
+  </include>
 </launch>
