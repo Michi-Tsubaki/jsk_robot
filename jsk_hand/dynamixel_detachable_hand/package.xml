@@ -8,7 +8,7 @@
   <author email="tsubaki@jsk.t.u-tokyo.ac.jp">Michitoshi Tsubaki</author>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <depend>dynamixel-general-hw</depend>
+  <depend>dynamixel_general_hw</depend>
   <depend>roseus</depend>
   <depend>rospy</depend>
   <depend>control_msgs</depend>

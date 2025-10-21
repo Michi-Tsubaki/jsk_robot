@@ -5,13 +5,6 @@ project(dynamixel_detachable_hand)
 # add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
-  dynamixel-general-hw
-  roseus
-  rospy
-)
-
-
-find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   roscpp
   roseus
