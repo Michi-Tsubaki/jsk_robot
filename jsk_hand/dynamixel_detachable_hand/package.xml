@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>dynamixel_detachable_hand</name>
+  <version>0.0.0</version>
+  <description>The dynamixel_detachable_hand package</description>
+  <maintainer email="tsubaki@jsk.t.u-tokyo.ac.jp">Michitoshi Tsubaki</maintainer>
+  <license>BSD</license>
+  <author email="tsubaki@jsk.t.u-tokyo.ac.jp">Michitoshi Tsubaki</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>dynamixel-general-hw</depend>
+  <depend>roseus</depend>
+  <depend>rospy</depend>
+  <depend>control_msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>actionlib_msgs</depend>
+
+  <export>
+
+  </export>
+</package>
