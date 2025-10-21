@@ -4,7 +4,7 @@ echo ""
 echo "This scripts copies udev rules for dual hands to /etc/udev/rules.d"
 echo ""
 
-sudo cp `rospack find jsk_surgical_tools`/udev/90-dual-hands.rules /etc/udev/rules.d
+sudo cp `rospack find jsk_nextage_bringup`/udev/90-dual-hands.rules /etc/udev/rules.d
 
 echo ""
 echo "Restarting udev"
