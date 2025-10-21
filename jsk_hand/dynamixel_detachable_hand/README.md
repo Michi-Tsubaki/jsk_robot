@@ -1,11 +1,9 @@
 # dynamixel_detachable_han
-
-## Hardware Utils
 This package provides launch files and eus lisp utils for dynamixcel detachanble hand device.
 
 https://github.com/user-attachments/assets/2364a8e6-f219-40ae-8abe-6e467f0e605a
 
-### List of Device
+## List of Device
 - Hands
 This hand is prepared by Tasuku Makabe for KXR Robot (for Kondo Kagaku Motor). I modified some parts for Dynamixel motor.
   - Default
@@ -14,7 +12,21 @@ This hand is prepared by Tasuku Makabe for KXR Robot (for Kondo Kagaku Motor). I
 - Forceps holder
 <img src="./figs/real_holder.jpg" width="200">
 
-### Setup
+## Installation
+```bash
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/src
+wstool init
+wstool merge https://raw.githubusercontent.com/jsk-ros-pkg/jsk_robot/master/jsk_hand/dynamixel_detachable_hand/dynamixel_detachable_hand_usr.rosinstall
+wstool update
+cd ../
+source /opt/ros/<Your ROS Distribution>/setup.bash
+rosdep install -y -r --from-paths src
+catkin build dynamixel_detachable_hand
+source devel/setup.bash
+```
+
+## Setup
 1. Please check the device information from the following command. In case your device is `/dev/ttyUSB0`,
 ```bash
 udevadm info -a -n /dev/ttyUSB0
@@ -38,7 +50,7 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger
 ```
 
-### Usage
+## Usage
 1. Please launch the following file. If your devices are connected, your devices will be launched!
 ```bash
 roslaunch dynamixel_detachable_hand dual_hand.launch
