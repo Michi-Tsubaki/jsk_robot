@@ -68,10 +68,10 @@
   (:close (&key (wait t) (tm 1.0) (velocity 2.0) (acceleration 0.0) (effort 0.0))
     (send self :move-hand -2.7 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
-  (:open-holder (&key (wait t) (tm 1.0) (velocity 0.5) (acceleration 0.0) (effort 0.0))
+  (:open-holder (&key (wait nil) (tm 1.0) (velocity 0.3) (acceleration 0.0) (effort 0.0))
     (send self :move-hand -0.1 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
-  (:close-holder (&key (wait t) (tm 1.0) (velocity 0.5) (acceleration 0.0) (effort 0.0))
+  (:close-holder (&key (wait nil) (tm 1.0) (velocity 0.5) (acceleration 0.0) (effort 0.0))
     (send self :move-hand 0.08 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
   
