@@ -1,8 +1,6 @@
 # dynamixel_detachable_han
 This package provides launch files and eus lisp utils for dynamixcel detachanble hand device.
 
-https://github.com/user-attachments/assets/2364a8e6-f219-40ae-8abe-6e467f0e605a
-
 ## List of Device
 - Hands
 This hand is prepared by Tasuku Makabe for KXR Robot (for Kondo Kagaku Motor). I modified some parts for Dynamixel motor.
