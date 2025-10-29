@@ -1,4 +1,4 @@
-# dynamixel_detachable_han
+# dynamixel_detachable_hand
 This package provides launch files and eus lisp utils for dynamixcel detachanble hand device.
 
 ## List of Device
