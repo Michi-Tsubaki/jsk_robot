@@ -5,7 +5,6 @@ This package provides launch files and eus lisp utils for dynamixcel detachanble
 - Hands
 This hand is prepared by Tasuku Makabe for KXR Robot (for Kondo Kagaku Motor). I modified some parts for Dynamixel motor.
   - Default
-<img src="./figs/real_hand.jpg" width="200">
 
 - Forceps holder
 <img src="./figs/real_holder.jpg" width="200">
