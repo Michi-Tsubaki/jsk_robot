@@ -1,7 +1,6 @@
 #!/usr/bin/env roseus
 
 (require "package://roseus/euslisp/actionlib.l")
-(ros::roseus "lhand_action_controller")
 (ros::roseus-add-msgs "control_msgs")
 (ros::roseus-add-msgs "trajectory_msgs")
 (ros::roseus-add-msgs "sensor_msgs")
