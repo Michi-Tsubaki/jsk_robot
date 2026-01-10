@@ -9,7 +9,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   roseus
   rospy
-  sensor_msgs                                                                                                                    actionlib_msgs
+  sensor_msgs
+  actionlib_msgs
   control_msgs
   trajectory_msgs
   dynamixel_general_hw
@@ -23,17 +24,15 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-file(GLOB SCRIPTS_FILES scripts/*.py)
-catkin_install_python(
-  PROGRAMS ${SCRIPTS_FILES}
+catkin_install_python(PROGRAMS
+  scripts/dynamixel_temperature_guages.py
+  scripts/monitor_connection.py
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/scripts
 )
 
 install(DIRECTORY scripts
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   USE_SOURCE_PERMISSIONS
-  PATTERN "*"
-  PATTERN "*/*.py" EXCLUDE
 )
 
 install(DIRECTORY launch/
@@ -51,4 +50,3 @@ install(DIRECTORY urdf/
 install(DIRECTORY udev/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/udev
 )
-

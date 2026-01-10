@@ -10,4 +10,8 @@
     <arg name="baud_rate" default="57600" />
     <arg name="namespace" default="rhand" />
   </include>
+
+
+  <node name="dxl_temperature_visualizer" pkg="dynamixel_detachable_hand" type="dynamixel_temperature_guages.py" output="screen" />
+
 </launch>
