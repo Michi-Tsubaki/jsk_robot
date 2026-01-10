@@ -34,7 +34,7 @@
     <parent link="base_link"/>
     <child link="rhand_link"/>
     <axis xyz="0 1 0"/>
-    <limit effort="0.92" velocity="6.8"/>
+    <limit effort="2.0" velocity="6.8"/>
   </joint>
 
   <transmission name="rhand_trans">
