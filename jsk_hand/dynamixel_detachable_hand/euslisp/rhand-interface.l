@@ -68,12 +68,17 @@
   (:close (&key (wait t) (tm 1.0) (velocity 2.0) (acceleration 0.0) (effort 0.0))
     (send self :move-hand -2.7 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
-  (:open-holder (&key (wait nil) (tm 1.0) (velocity 0.3) (acceleration 0.0) (effort 0.0))
-    (send self :move-hand -0.1 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
+  (:open-holder (&key (wait nil) (tm 1.0) (velocity 0.3) (acceleration 0.0) (effort 0.8))
+    (send self :move-hand 0.2 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
-  (:close-holder (&key (wait nil) (tm 1.0) (velocity 0.5) (acceleration 0.0) (effort 0.0))
-    (send self :move-hand 0.08 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
+  (:close-holder (&key (wait nil) (tm 1.0) (velocity 0.3) (acceleration 0.0) (effort 0.8))
+    (send self :move-hand 1.00 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
+  (:open-scissors (&key (wait nil) (tm 1.0) (velocity 3.0) (acceleration 0.0) (effort 0.9))
+    (send self :move-hand -0.8 :wait nil :tm tm :velocity velocity :acceleration acceleration :effort effort)) 
+  
+  (:close-scissors (&key (wait nil) (tm 1.0) (velocity 2.0) (acceleration 0.0) (effort 0.8))
+    (send self :move-hand -0.1 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))  
   
   (:wait-for-hand () (send action-client- :wait-for-result)))
 

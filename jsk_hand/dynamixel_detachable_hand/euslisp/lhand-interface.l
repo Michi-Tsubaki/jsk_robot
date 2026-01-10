@@ -66,13 +66,13 @@
     (send self :move-hand 0.0 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
   (:close (&key (wait t) (tm 1.0) (velocity 2.0) (acceleration 0.0) (effort 0.0))
-    (send self :move-hand -2.7 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
+    (send self :move-hand -3.0 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
   (:open-forceps (&key (wait nil) (tm 1.0) (velocity 1.0) (acceleration 0.0) (effort 0.0))
     (send self :move-hand -2.2 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
   (:close-forceps  (&key (wait nil) (tm 1.0) (velocity 2.5) (acceleration 0.0) (effort 0.0))
-    (send self :move-hand -2.7 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
+    (send self :move-hand -3.0 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
   (:wait-for-hand () (send action-client- :wait-for-result)))
 
