@@ -11,42 +11,29 @@ endif()
 find_package(catkin REQUIRED COMPONENTS
   ${ROSEUS_package} # required in indigo
 )
-find_package(mycobot_description) # Just in case when description is not released. Avoid compile failing
+
+find_package(catkin REQUIRED COMPONENTS
+  mycobot_description
+)
 
 catkin_package()
 
-if(NOT mycobot_description_FOUND)
-  message(WARNING "mycobot_description is not found, so skip generating eus models.")
-  message(WARNING "Install mycobot_description from https://github.com/tongtybj/mycobot_ros.git")
-  return()
-endif()
+#set(_mycobot_urdf ${mycobot_description_SOURCE_PREFIX}/urdf/mycobot_280_m5)
+#set(_venv_dir ${PROJECT_BINARY_DIR}/urdf2eus_venv)
 
-find_package(euscollada) # Just in case when euscollada not released. Avoid compile failing
-if(NOT euscollada_FOUND)
-  message(WARNING "euscollada is not found, so skip generating eus models.")
-  return()
-endif()
+#add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/mycobot.l
+#  COMMAND python3 -m venv ${_venv_dir}
+#  COMMAND ${_venv_dir}/bin/pip install urdfeus
+#  COMMAND ${_venv_dir}/bin/urdf2eus 
+#    ${_mycobot_urdf}/mycobot_280_m5.urdf 
+#    ${PROJECT_SOURCE_DIR}/mycobot.l 
+#    --name mycobot 
+#    --yaml-path ${PROJECT_SOURCE_DIR}/mycobot.yaml
+#  COMMAND rm -rf ${_venv_dir}
+#  DEPENDS ${_mycobot_urdf}/mycobot_280_m5.urdf ${PROJECT_SOURCE_DIR}/mycobot.yaml
+#  COMMENT "Generating mycobot.l using urdf2eus in temporary venv")
 
-
-###########
-## Build ##
-###########
-set(_mycobot_urdf ${mycobot_description_SOURCE_PREFIX}/urdf/mycobot)
-set(_collada2eus ${euscollada_PREFIX}/lib/euscollada/collada2eus)
-
-message("mycobot_urdf: ${_mycobot_urdf}")
-message("collada2eus: ${_collada2eus}")
-
-# TODO: enable process different series of arm robot. Refer to kinovaeus
-add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/mycobot.urdf
-  COMMAND xacro ${_mycobot_urdf}/mycobot.urdf.xacro > ${PROJECT_BINARY_DIR}/mycobot.urdf
-  DEPENDS ${_mycobot_urdf}/mycobot.urdf.xacro)
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/mycobot.l
-  COMMAND echo "${_collada2eus} ${PROJECT_BINARY_DIR}/mycobot.urdf mycobot.l"
-  COMMAND ${_collada2eus} ${PROJECT_BINARY_DIR}/mycobot.urdf ${PROJECT_SOURCE_DIR}/mycobot.yaml ${PROJECT_SOURCE_DIR}/mycobot.l
-  DEPENDS ${PROJECT_BINARY_DIR}/mycobot.urdf ${PROJECT_SOURCE_DIR}/mycobot.yaml ${_collada2eus})
-add_custom_target(compile_mycobot ALL DEPENDS ${PROJECT_SOURCE_DIR}/mycobot.l)
-
+#add_custom_target(compile_mycobot ALL DEPENDS ${PROJECT_SOURCE_DIR}/mycobot.l)
 
 #############
 ## Install ##
