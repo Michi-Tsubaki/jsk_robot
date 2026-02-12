@@ -12,11 +12,44 @@ find_package(catkin REQUIRED COMPONENTS
   ${ROSEUS_package} # required in indigo
 )
 
-find_package(catkin REQUIRED COMPONENTS
-  mycobot_description
-)
+
+find_package(mycobot_description) # Just in case when description is not released. Avoid compile failing
 
 catkin_package()
+
+if(NOT mycobot_description_FOUND)
+  message(WARNING "mycobot_description is not found, so skip generating eus models.")
+  message(WARNING "Install mycobot_description from https://github.com/tongtybj/mycobot_ros.git")
+  return()
+endif()
+
+find_package(euscollada) # Just in case when euscollada not released. Avoid compile failing
+if(NOT euscollada_FOUND)
+  message(WARNING "euscollada is not found, so skip generating eus models.")
+  return()
+endif()
+
+
+###########
+## Build ##
+###########
+set(_mycobot_urdf ${mycobot_description_SOURCE_PREFIX}/urdf/mycobot_280_m5)
+set(_collada2eus ${euscollada_PREFIX}/lib/euscollada/collada2eus)
+
+message("mycobot_urdf: ${_mycobot_urdf}")
+message("collada2eus: ${_collada2eus}")
+
+add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/mycobot.l
+  COMMAND echo "${_collada2eus} -I ${_mycobot_urdf}/mycobot_280_m5.urdf -N mycobot -C ${PROJECT_SOURCE_DIR}/mycobot.yaml -O ${PROJECT_SOURCE_DIR}/mycobot.l"
+  COMMAND ${_collada2eus} -I ${_mycobot_urdf}/mycobot_280_m5.urdf -N mycobot -C ${PROJECT_SOURCE_DIR}/mycobot.yaml -O ${PROJECT_SOURCE_DIR}/mycobot.l
+  DEPENDS ${_mycobot_urdf}/mycobot_280_m5.urdf ${PROJECT_SOURCE_DIR}/mycobot.yaml ${_collada2eus})
+add_custom_target(compile_mycobot ALL DEPENDS ${PROJECT_SOURCE_DIR}/mycobot.l)
+
+#find_package(catkin REQUIRED COMPONENTS
+#  mycobot_description
+#)
+
+#catkin_package()
 
 #set(_mycobot_urdf ${mycobot_description_SOURCE_PREFIX}/urdf/mycobot_280_m5)
 #set(_venv_dir ${PROJECT_BINARY_DIR}/urdf2eus_venv)

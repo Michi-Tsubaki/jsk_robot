@@ -4,7 +4,7 @@ rarm:
   - joint4_to_joint3     : rarm-shoulder-r
   - joint5_to_joint4     : rarm-elbow-p
   - joint6_to_joint5     : rarm-elbow-r
-  - joint6output_to_joint     : rarm-wrist-p
+  - joint6output_to_joint6     : rarm-wrist-p
 
 angle-vector:
   reset-pose: [0, 0, 0, 0, 0, 0]

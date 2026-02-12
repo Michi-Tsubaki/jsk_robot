@@ -1,26 +1,23 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(jsk_mycobot_startup)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
+# Find catkin macros and libraries
 find_package(catkin)
 
-###################################
-## catkin specific configuration ##
-###################################
+# catkin specific configuration
 catkin_package()
 
-#############
-## Install ##
-#############
+# Install
+catkin_install_python(PROGRAMS
+  scripts/mycobot_interface.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/scripts
+)
+
 install(DIRECTORY launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   USE_SOURCE_PERMISSIONS)
 
-#############
-## Testing ##
-#############
+# Test
 if(CATKIN_ENABLE_TESTING)
   find_package(catkin REQUIRED COMPONENTS roslaunch roslint)
 
