@@ -41,7 +41,7 @@ class ErrorMonitor:
         rospy.sleep(10)
         
         msg = Float64MultiArray()
-        msg.data = [0.92]
+        msg.data = [0.92, 0.92]
         self.pub_rhand.publish(msg)
         self.pub_lhand.publish(msg)
         

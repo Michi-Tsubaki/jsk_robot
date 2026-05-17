@@ -6,6 +6,11 @@
 (ros::roseus-add-msgs "trajectory_msgs")
 (ros::roseus-add-msgs "sensor_msgs")
 (ros::roseus-add-msgs "actionlib_msgs")
+(ros::roseus-add-msgs "std_msgs")
+
+(defparameter *rhand-detach-torque-constant* 2.0)
+(defparameter *rhand-detach-current-ma* 500.0)
+(defparameter *rhand-effort-limit* 2.00)
 
 (defclass rhand-interface
   :super propertied-object
@@ -21,6 +26,7 @@
                     :groupname groupname))
     (unless (send action-client- :wait-for-server 5)
       (ros::ros-warn "Action server not available"))
+    (ros::advertise "/rhand/joint_group_effort_controller/command" std_msgs::Float64MultiArray 1)
     (ros::subscribe "/rhand/joint_states" sensor_msgs::JointState
                     #'send self :joint-states-callback 1 :groupname groupname)
     (setq move-state- nil)
@@ -59,6 +65,34 @@
           (ros::ros-warn "Hand movement failed: ~A" move-state-))))
     move-state-)
 
+  (:move-detach-joint (angle &key (wait t) (tm 1.0) (velocity 0.3) (acceleration 0.0) (effort 0.0))
+    (send self :command-detach-current (/ (* effort 1000.0) *rhand-detach-torque-constant*) :wait wait :tm tm))
+
+  (:detach-effort-command (detach-effort)
+    (let ((joints (ros::get-param "/rhand/joint_group_effort_controller/joints" (list "rhand_detach_joint_0")))
+          (data nil))
+      (dolist (joint joints)
+        (push (if (string= joint "rhand_detach_joint_0")
+                  (float detach-effort)
+                (float *rhand-effort-limit*))
+              data))
+      (nreverse data)))
+
+  (:set-detach-effort (detach-effort)
+    (let ((msg (instance std_msgs::Float64MultiArray :init)))
+      (send msg :data (apply #'float-vector (send self :detach-effort-command detach-effort)))
+      (ros::publish "/rhand/joint_group_effort_controller/command" msg)))
+
+  (:stop-detach ()
+    (send self :set-detach-effort 0.0))
+
+  (:command-detach-current (current-ma &key (wait t) (tm 1.0))
+    (let ((detach-effort (* (/ current-ma 1000.0) *rhand-detach-torque-constant*)))
+      (send self :set-detach-effort detach-effort)
+      (when (and tm (> tm 0.0))
+        (ros::duration-sleep tm)
+        (send self :stop-detach))))
+
   (:cancel-move-hand () (send action-client- :cancel-goal))
   (:hand-moving-p () (eq (send action-client- :get-state) actionlib_msgs::GoalStatus::*active*))
 
@@ -69,16 +103,22 @@
     (send self :move-hand -2.7 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
   (:open-holder (&key (wait nil) (tm 1.0) (velocity 0.3) (acceleration 0.0) (effort 0.8))
-    (send self :move-hand 0.2 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
+    (send self :move-hand -1.87 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
   (:close-holder (&key (wait nil) (tm 1.0) (velocity 0.3) (acceleration 0.0) (effort 0.8))
-    (send self :move-hand 1.00 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
+    (send self :move-hand 1.0 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
 
   (:open-scissors (&key (wait nil) (tm 1.0) (velocity 3.0) (acceleration 0.0) (effort 0.9))
     (send self :move-hand -0.8 :wait nil :tm tm :velocity velocity :acceleration acceleration :effort effort)) 
   
   (:close-scissors (&key (wait nil) (tm 1.0) (velocity 2.0) (acceleration 0.0) (effort 0.8))
     (send self :move-hand -0.1 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))  
+
+  (:attach (&key (wait t) (tm 1.0) (velocity 0.3) (acceleration 0.0) effort)
+    (send self :command-detach-current (- *rhand-detach-current-ma*) :wait wait :tm tm))
+
+  (:detach (&key (wait t) (tm 1.0) (velocity 0.3) (acceleration 0.0) effort)
+    (send self :command-detach-current *rhand-detach-current-ma* :wait wait :tm tm))
   
   (:wait-for-hand () (send action-client- :wait-for-result)))
 

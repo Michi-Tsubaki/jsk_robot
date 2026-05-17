@@ -6,6 +6,11 @@
 (ros::roseus-add-msgs "trajectory_msgs")
 (ros::roseus-add-msgs "sensor_msgs")
 (ros::roseus-add-msgs "actionlib_msgs")
+(ros::roseus-add-msgs "std_msgs")
+
+(defparameter *lhand-detach-torque-constant* 1.15)
+(defparameter *lhand-detach-current-ma* 400.0)
+(defparameter *lhand-effort-limit* 0.92)
 
 (defclass lhand-interface
   :super propertied-object
@@ -21,6 +26,7 @@
                     :groupname groupname))
     (unless (send action-client- :wait-for-server 5)
       (ros::ros-warn "Action server not available"))
+    (ros::advertise "/lhand/joint_group_effort_controller/command" std_msgs::Float64MultiArray 1)
     (ros::subscribe "/lhand/joint_states" sensor_msgs::JointState
                     #'send self :joint-states-callback 1 :groupname groupname)
     (setq move-state- nil)
@@ -59,6 +65,34 @@
           (ros::ros-warn "Hand movement failed: ~A" move-state-))))
     move-state-)
 
+  (:move-detach-joint (angle &key (wait t) (tm 1.0) (velocity 0.3) (acceleration 0.0) (effort 0.0))
+    (send self :command-detach-current (/ (* effort 1000.0) *lhand-detach-torque-constant*) :wait wait :tm tm))
+
+  (:detach-effort-command (detach-effort)
+    (let ((joints (ros::get-param "/lhand/joint_group_effort_controller/joints" (list "lhand_detach_joint_0")))
+          (data nil))
+      (dolist (joint joints)
+        (push (if (string= joint "lhand_detach_joint_0")
+                  (float detach-effort)
+                (float *lhand-effort-limit*))
+              data))
+      (nreverse data)))
+
+  (:set-detach-effort (detach-effort)
+    (let ((msg (instance std_msgs::Float64MultiArray :init)))
+      (send msg :data (apply #'float-vector (send self :detach-effort-command detach-effort)))
+      (ros::publish "/lhand/joint_group_effort_controller/command" msg)))
+
+  (:stop-detach ()
+    (send self :set-detach-effort 0.0))
+
+  (:command-detach-current (current-ma &key (wait t) (tm 1.0))
+    (let ((detach-effort (* (/ current-ma 1000.0) *lhand-detach-torque-constant*)))
+      (send self :set-detach-effort detach-effort)
+      (when (and tm (> tm 0.0))
+        (unix:sleep (float tm))
+        (send self :stop-detach))))
+
   (:cancel-move-hand () (send action-client- :cancel-goal))
   (:hand-moving-p () (eq (send action-client- :get-state) actionlib_msgs::GoalStatus::*active*))
 
@@ -73,6 +107,12 @@
 
   (:close-forceps  (&key (wait nil) (tm 1.0) (velocity 2.5) (acceleration 0.0) (effort 0.0))
     (send self :move-hand -3.0 :wait wait :tm tm :velocity velocity :acceleration acceleration :effort effort))
+
+  (:attach (&key (wait t) (tm 1.0) (velocity 0.3) (acceleration 0.0) effort)
+    (send self :command-detach-current (- *lhand-detach-current-ma*) :wait wait :tm tm))
+
+  (:detach (&key (wait t) (tm 1.0) (velocity 0.3) (acceleration 0.0) effort)
+    (send self :command-detach-current *lhand-detach-current-ma* :wait wait :tm tm))
 
   (:wait-for-hand () (send action-client- :wait-for-result)))
 

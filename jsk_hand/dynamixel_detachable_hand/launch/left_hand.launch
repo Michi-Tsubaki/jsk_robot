@@ -17,7 +17,7 @@
   <group ns="$(arg namespace)">
     <node pkg="rostopic" type="rostopic" name="set_initial_effort_limit"
           args="pub joint_group_effort_controller/command std_msgs/Float64MultiArray
-                '{layout: {dim: [], data_offset: 0}, data: [0.92]}'"
+                '{layout: {dim: [], data_offset: 0}, data: [0.92, 0.0]}'"
           output="screen"/>
   </group>
 </launch>

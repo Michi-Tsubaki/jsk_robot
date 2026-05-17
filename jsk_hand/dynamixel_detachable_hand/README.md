@@ -53,6 +53,29 @@ sudo udevadm trigger
 roslaunch dynamixel_detachable_hand dual_hand.launch
 ```
 
+If the detachable hand motors are not connected, launch only the always-connected
+detacher motors instead. This launch uses left detacher ID 2 and right detacher
+ID 3, and does not require the detachable hand motors to be present.
+```bash
+roslaunch dynamixel_detachable_hand dual_detacher.launch
+```
+
+If the left and right hands are attached independently, choose each side at
+launch time.
+```bash
+# No detachable hands are attached.
+roslaunch dynamixel_detachable_hand dual_hand_optional.launch
+
+# Only the left hand is attached.
+roslaunch dynamixel_detachable_hand dual_hand_optional.launch left_hand_attached:=true
+
+# Only the right hand is attached.
+roslaunch dynamixel_detachable_hand dual_hand_optional.launch right_hand_attached:=true
+
+# Both hands are attached.
+roslaunch dynamixel_detachable_hand dual_hand_optional.launch left_hand_attached:=true right_hand_attached:=true
+```
+
 2. Please open `roseus` interpreter.
 ```bash
 emacs -nw
