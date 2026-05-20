@@ -69,7 +69,7 @@ Also please allocate the correct IP adress instructed [official instruction](htt
 - terminal 1
 
 ```bash
-source <path to your catkin ws>/setup.bash
+source <path to your catkin ws>/devel/setup.bash
 roscore
 ```
 
@@ -84,28 +84,46 @@ sudo ./inspire_g1 -k -u
 - terminal 3 (Bringup robot as a ROS2 robot)
 
 ```bash
-source <path_to_your_colcon_ws>/setup.bash
-ros2 launch g1_bringup g1_bringup.launch.py network_interface:=enp0s31f6 hand_type:=inspire_dfq
+source <path_to_your_colcon_ws>/install/setup.bash
+ros2 launch g1_bringup g1_bringup.launch.py network_interface:=<network (ex. enp0s31f6)> hand_type:=inspire_dfq
 ```
 
 - terminal 4 (Activate ros2_control upper_body_controller)
 ```bash
-source <path_to_your_colcon_ws>/setup.bash
+source <path_to_your_colcon_ws>/install/setup.bash
 ros2 control set_controller_state upper_body_controller active
 ```
 
 - terminal 5 (Bridge ros2 topic and action to ros1 topic and actionlib)
 ```bash
-source <path_to_your_colcon_ws>/setup.bash
-source <path_to_your_catkin_ws>/setup.bash
+source <path_to_your_colcon_ws>/install/setup.bash
+source <path_to_your_catkin_ws>/devel/setup.bash
 ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
 ```
 
-- terminal 6 (Please run your own program using g1-interface.l)
+- terminal 6 ~ (Please run your own program using g1-interface.l)
 ```bash
 cd euslisp
 roseus
 load "g1-interface.l"
+```
+
+### If you want to do teleoperation using spacenav
+
+- terminal 6
+
+``` bash
+source <path_to_your_catkin_ws>/devel/setup.bash
+roscd jsk_generic_teleop/launch # When you can't reach this package, please install the package.
+roslaunch spacenav_classic.launch
+```
+
+- terminal 7
+
+``` bash
+source <path_to_your_catkin_ws>/devel/setup.bash
+roscd jsk_generic_teleop/sample
+roseus spacenav_classic.launch
 ```
 
 
