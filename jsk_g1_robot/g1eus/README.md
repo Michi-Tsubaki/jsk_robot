@@ -101,11 +101,15 @@ source <path_to_your_catkin_ws>/devel/setup.bash
 ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
 ```
 
-- terminal 6 ~ (Please run your own program using g1-interface.l)
-```bash
-cd euslisp
-roseus
-load "g1-interface.l"
+- terminal 6 ~ (Optional)
+Please run your own program using g1-interface.l like
+
+```shell
+source <path_to_your_catkin_ws>/devel/setup.bash
+```
+
+```lisp
+(load "package://g1eus/g1-interface.l")
 ```
 
 ### If you want to do teleoperation using spacenav
