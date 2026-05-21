@@ -118,16 +118,7 @@ source <path_to_your_catkin_ws>/devel/setup.bash
 
 ``` bash
 source <path_to_your_catkin_ws>/devel/setup.bash
-roscd jsk_generic_teleop/launch # When you can't reach this package, please install the package.
-roslaunch spacenav_classic.launch
-```
-
-- terminal 7
-
-``` bash
-source <path_to_your_catkin_ws>/devel/setup.bash
-roscd jsk_generic_teleop/sample
-roseus spacenav_classic.launch
+roslaunch jsk_generic_teleop spacenav_classic.launch
 ```
 
 
