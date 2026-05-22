@@ -118,7 +118,7 @@ source <path_to_your_catkin_ws>/devel/setup.bash
 
 ``` bash
 source <path_to_your_catkin_ws>/devel/setup.bash
-roslaunch jsk_generic_teleop spacenav_classic.launch
+roslaunch jsk_generic_teleop g1_spacenav_teleop.launch
 ```
 
 
@@ -126,7 +126,7 @@ roslaunch jsk_generic_teleop spacenav_classic.launch
 
 - Hand Interface
 
-```roseus
+```lisp
 (send *ri* :hand-angle-vector :larm #f(0 0 0 0 0 0) 1000) ;; to move left hand.
 
 ;; Open
