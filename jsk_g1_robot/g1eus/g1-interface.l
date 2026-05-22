@@ -1,5 +1,5 @@
 (load "package://pr2eus/robot-interface.l")
-(require :g1 "package://g1eus/euslisp/g1.l")
+(require :g1 "package://g1eus/g1.l")
 
 (defclass g1-interface
   :super robot-interface

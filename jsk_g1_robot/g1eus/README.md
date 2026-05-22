@@ -101,11 +101,15 @@ source <path_to_your_catkin_ws>/devel/setup.bash
 ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
 ```
 
-- terminal 6 ~ (Please run your own program using g1-interface.l)
-```bash
-cd euslisp
-roseus
-load "g1-interface.l"
+- terminal 6 ~ (Optional)
+Please run your own program using g1-interface.l like
+
+```shell
+source <path_to_your_catkin_ws>/devel/setup.bash
+```
+
+```lisp
+(load "package://g1eus/g1-interface.l")
 ```
 
 ### If you want to do teleoperation using spacenav
@@ -114,16 +118,7 @@ load "g1-interface.l"
 
 ``` bash
 source <path_to_your_catkin_ws>/devel/setup.bash
-roscd jsk_generic_teleop/launch # When you can't reach this package, please install the package.
-roslaunch spacenav_classic.launch
-```
-
-- terminal 7
-
-``` bash
-source <path_to_your_catkin_ws>/devel/setup.bash
-roscd jsk_generic_teleop/sample
-roseus spacenav_classic.launch
+roslaunch jsk_generic_teleop g1_spacenav_teleop.launch
 ```
 
 
@@ -131,7 +126,7 @@ roseus spacenav_classic.launch
 
 - Hand Interface
 
-```roseus
+```lisp
 (send *ri* :hand-angle-vector :larm #f(0 0 0 0 0 0) 1000) ;; to move left hand.
 
 ;; Open
