@@ -139,4 +139,26 @@ roslaunch jsk_generic_teleop g1_spacenav_teleop.launch
 (send *ri* :default-grasp :larm) ;; to move left hand.
 ```
 
+- Cmd Vel Interface
+
+`g1-interface` can publish `geometry_msgs/Twist` to `/cmd_vel`.
+The velocity units are `x`/`y` in `[m/s]` and `yaw-rate` in `[rad/s]`.
+
+```lisp
+;; Initialize with the default cmd_vel topic (/cmd_vel).
+(setq *ri* (instance g1-interface :init))
+
+;; Move forward at 0.2 m/s for 1 sec, then publish zero velocity.
+(send *ri* :go-velocity 0.2 0.0 0.0 1000)
+
+;; Move sideways at 0.1 m/s for 1 sec.
+(send *ri* :go-velocity 0.0 0.1 0.0 1000)
+
+;; Rotate at 0.3 rad/s for 1 sec.
+(send *ri* :go-velocity 0.0 0.0 0.3 1000)
+
+;; Stop immediately.
+(send *ri* :go-stop)
+```
+
 Other methods than the hand interface is inherit from pr2eus.
