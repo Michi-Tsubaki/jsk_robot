@@ -1,10 +1,12 @@
 (load "package://pr2eus/robot-interface.l")
+(ros::load-ros-manifest "geometry_msgs")
 (require :g1 "package://g1eus/g1.l")
 
 (defclass g1-interface
   :super robot-interface
   :slots (hand-actions-
-          hand-joint-names-))
+          hand-joint-names-
+          cmd-vel-topic))
 
 (defmethod g1-interface
   (:arm-to-hand-controller-name
@@ -68,8 +70,9 @@
     )
    )
 
-  (:init (&rest args)
+  (:init (&rest args &key ((:cmd-vel-topic cvt) "/cmd_vel") &allow-other-keys)
     (send-super* :init :robot g1-robot args)
+    (setq cmd-vel-topic cvt)
     (setq hand-actions- (make-hash-table))
     (setq hand-joint-names- (make-hash-table))
     (dolist (arm (list :rarm :larm))
@@ -87,6 +90,41 @@
         (if (and joint-action-enable (send action :wait-for-server 3))
           (sethash arm hand-actions- action)
           (ros::ros-warn "~A is not respond" action)))))
+
+  (:send-cmd-vel-raw
+   (x y yaw-rate &key (topic-name cmd-vel-topic))
+   "Publish geometry_msgs/Twist to cmd_vel. x/y are [m/sec], yaw-rate is [rad/sec]."
+   (unless (ros::get-topic-publisher topic-name)
+     (ros::advertise topic-name geometry_msgs::Twist 1)
+     (unix:usleep (* 100 1000)))
+   (let ((msg (instance geometry_msgs::Twist :init)))
+     (send msg :linear :x x)
+     (send msg :linear :y y)
+     (send msg :angular :z yaw-rate)
+     (ros::publish topic-name msg))
+   t)
+
+  (:go-velocity
+   (x y yaw-rate &optional (msec 1000) &key (stop t) (wait t))
+   "Publish cmd_vel for msec. x/y are [m/sec], yaw-rate is [rad/sec]."
+   (cond
+     (wait
+      (ros::rate 100)
+      (let ((start-time (ros::time-now)))
+        (while (and (ros::ok)
+                    (< (* 1000.0 (send (ros::time- (ros::time-now) start-time) :to-sec)) msec))
+          (send self :spin-once)
+          (send self :send-cmd-vel-raw x y yaw-rate)
+          (ros::sleep)))
+      (when stop
+        (send self :send-cmd-vel-raw 0 0 0)))
+     (t
+      (send self :send-cmd-vel-raw x y yaw-rate)))
+   t)
+
+  (:go-stop
+   ()
+   (send self :send-cmd-vel-raw 0 0 0))
 
 ;;  (:larm (&rest args)
 ;;   (send* self :limb :larm args))

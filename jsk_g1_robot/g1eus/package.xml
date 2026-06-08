@@ -7,6 +7,7 @@
   <author email="tsubaki@jsk.t.u-tokyo.ac.jp">Michitoshi Tsubaki</author>
   <license>BSD</license>
   <depend>euscollada</depend>
+  <depend>geometry_msgs</depend>
   <depend>pr2eus</depend>
   <depend>unitree_controller</depend>
   <buildtool_depend>catkin</buildtool_depend>

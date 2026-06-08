@@ -3,12 +3,13 @@ project(g1eus)
 
 find_package(catkin REQUIRED COMPONENTS
   euscollada
+  geometry_msgs
   pr2eus
   unitree_controller
 )
 
 catkin_package(
-  CATKIN_DEPENDS euscollada pr2eus unitree_controller
+  CATKIN_DEPENDS euscollada geometry_msgs pr2eus unitree_controller
 )
 
 set(G1_DESCRIPTION_DIR ${unitree_controller_SOURCE_PREFIX}/../robots/g1_description)
