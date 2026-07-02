@@ -76,6 +76,22 @@ roslaunch dynamixel_detachable_hand dual_hand_optional.launch right_hand_attache
 roslaunch dynamixel_detachable_hand dual_hand_optional.launch left_hand_attached:=true right_hand_attached:=true
 ```
 
+The attached tool model can be selected per side.  Available tool names are
+`generic`, `needle_holder`, `gripper`, and `forceps`.  `needle_holder` uses the
+SURGENOID needle-holder meshes and nonlinear four-bar display coupling;
+`gripper` and `forceps` are placeholder URDFs with the same stable control
+joint names.
+```bash
+roslaunch dynamixel_detachable_hand dual_hand.launch left_tool:=forceps right_tool:=needle_holder
+roslaunch dynamixel_detachable_hand left_hand.launch tool:=needle_holder
+```
+
+If the hardware controller is already running and only the display model should
+be switched, relaunch only the model relay and robot_state_publisher:
+```bash
+roslaunch dynamixel_detachable_hand hand_tool_model.launch side:=lhand namespace:=lhand tool:=forceps
+```
+
 2. Please open `roseus` interpreter.
 ```bash
 emacs -nw
@@ -106,3 +122,33 @@ roseus
 
 - You can also use python interface (methods name is the same as euslisp interface.
 Please see `scripts/test_hand.py`
+
+## EusLisp tool change helper
+
+`euslisp/tool-change.l` provides a common attach/detach API for robot tasks.
+It keeps the physical detachable hand interface in this package and lets task
+code switch the URDF model and IK target without changing each robot model.
+
+```lisp
+(require "package://mycoboteus/mycobot-interface.l")
+(require "package://dynamixel_detachable_hand/euslisp/tool-change.l")
+
+(mycobot-init)
+;; Current Robomech wiring maps the single mycobot arm to the lhand board.
+(tool-setup-robot *mycobot* :robot-kind :mycobot)
+
+;; Model-only switch.
+(attach-tool *mycobot* :rarm :needle-holder)
+(tool-ik *mycobot* :rarm target-coords :rotation-axis t)
+(detach-tool *mycobot* :rarm)
+
+;; Use this when the detachable current and controller restart are desired.
+(attach-tool *mycobot* :rarm :forceps :physical t :restart-control t)
+```
+
+For the Robomech mycobot demo, load:
+```lisp
+(load "package://surgical_intelligence/euslisp/robomech-2.l")
+(robomech-2-demo) ; model-only
+(robomech-2-demo :physical t :restart-control t) ; real detach/attach sequence
+```

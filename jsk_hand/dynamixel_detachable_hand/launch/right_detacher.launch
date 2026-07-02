@@ -1,5 +1,5 @@
 <launch>
-  <arg name="port_name" default="/dev/rhand" />
+  <arg name="port_name" default="/dev/lhand" />
   <arg name="baud_rate" default="57600" />
   <arg name="namespace" default="rhand" />
 

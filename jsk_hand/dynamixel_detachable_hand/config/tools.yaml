@@ -1,0 +1,16 @@
+# Common detachable-tool vocabulary for both lhand and rhand.
+# Each tool must provide urdf/{side}_{tool}.urdf.  Tools with nonlinear
+# display kinematics provide config/{side}/{tool}_loop_couplings.yaml.
+tools:
+  generic:
+    description: Dummy generic detachable hand model.
+    loop_coupling: false
+  needle_holder:
+    description: SURGENOID needle holder model with four-bar display coupling.
+    loop_coupling: true
+  gripper:
+    description: Dummy gripper placeholder model.
+    loop_coupling: false
+  forceps:
+    description: Dummy forceps placeholder model.
+    loop_coupling: false

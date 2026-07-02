@@ -36,7 +36,13 @@ class ErrorMonitor:
         
         rospy.sleep(3)
         
-        subprocess.Popen(['roslaunch', 'dynamixel_detachable_hand', 'dual_hand.launch'])
+        left_tool = rospy.get_param('/lhand/current_tool', 'generic')
+        right_tool = rospy.get_param('/rhand/current_tool', 'generic')
+        subprocess.Popen([
+            'roslaunch', 'dynamixel_detachable_hand', 'dual_hand.launch',
+            'left_tool:={}'.format(left_tool),
+            'right_tool:={}'.format(right_tool)
+        ])
         
         rospy.sleep(10)
         
