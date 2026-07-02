@@ -8,6 +8,7 @@ import math
 from itertools import zip_longest # TODO: python3 is zip_longest
 
 from pymycobot.mycobot import MyCobot
+from pymycobot.robot_info import RobotLimit
 
 import rospy
 import actionlib
@@ -30,6 +31,10 @@ class MycobotInterface(object):
         rospy.loginfo("Connect mycobot on %s,%s" % (port, baud))
         self.mc = MyCobot(port, baud)
         self.lock = threading.Lock()
+
+        robot_limit = RobotLimit.robot_limit[self.mc.__class__.__name__]
+        self.min_angles = np.array(robot_limit["angles_min"])
+        self.max_angles = np.array(robot_limit["angles_max"])
 
         self.joint_angle_pub = rospy.Publisher("joint_states", JointState, queue_size=5)
         self.real_angles = None
@@ -55,6 +60,23 @@ class MycobotInterface(object):
 
         self.gripper_as = actionlib.SimpleActionServer("gripper_controller/gripper_command", GripperCommandAction, execute_cb=self.gripper_as_cb)
         self.gripper_as.start()
+
+    def send_angles(self, angles, speed):
+        """Send a command after constraining it to pymycobot's valid range."""
+        angles = np.asarray(angles, dtype=float)
+        clipped_angles = np.clip(angles, self.min_angles, self.max_angles)
+        clipped_speed = int(np.clip(speed, 1, 100))
+
+        if not np.array_equal(angles, clipped_angles) or speed != clipped_speed:
+            rospy.logwarn(
+                "Clipped mycobot command: angles %s -> %s, speed %s -> %s",
+                angles.tolist(), clipped_angles.tolist(), speed, clipped_speed)
+
+        # Always release the lock if the driver raises an exception.
+        with self.lock:
+            self.mc.send_angles(clipped_angles.tolist(), clipped_speed)
+
+        return clipped_angles, clipped_speed
 
     def run(self):
 
@@ -138,15 +160,11 @@ class MycobotInterface(object):
                     vel = v
 
         print(angles, vel)
-        self.lock.acquire()
-        self.mc.send_angles(angles, vel)
-        self.lock.release()
+        self.send_angles(angles, vel)
 
     def set_servo_cb(self, req):
         if req.data:
-            self.lock.acquire()
-            self.mc.send_angles(self.real_angles, 0)
-            self.lock.release()
+            self.send_angles(self.real_angles, 0)
             rospy.loginfo("servo on")
         else:
             self.lock.acquire()
@@ -293,9 +311,7 @@ class MycobotInterface(object):
                     vel = self.min_vel
                 # vel = 0 # zero in pymycobot is the max speed
 
-            self.lock.acquire()
-            self.mc.send_angles(target_angles.tolist(), vel)
-            self.lock.release()
+            target_angles, vel = self.send_angles(target_angles, vel)
 
             # workaround: pure feedforwad style to address the polling/sending conflict problem in mycobot pro 320
             if not self.get_joint_state:
@@ -312,9 +328,7 @@ class MycobotInterface(object):
                 # by setting the goal to the current position
                 if self.joint_as.is_preempt_requested():
 
-                    self.lock.acquire()
-                    self.mc.send_angles(self.real_angles, 0)
-                    self.lock.release()
+                    self.send_angles(self.real_angles, 0)
 
                     self.joint_as.set_preempted()
                     if self.joint_as.is_new_goal_available():

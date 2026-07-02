@@ -1,5 +1,5 @@
 <launch>
-  <arg name="port" default="/dev/ttyUSB0" doc ="the serial port for connection" />
+  <arg name="port" default="/dev/ttyACM1" doc ="the serial port for connection" />
   <arg name="baud" default="115200" doc ="the serial baudrate" />
   <arg name="rviz" default="true" doc="Set true if you want RViz." />
   <arg name="moveit" default="false" doc="Set true if you want Moveit-based plan." />
