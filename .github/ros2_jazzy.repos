@@ -1,0 +1,9 @@
+repositories:
+  dynamixel-workbench:
+    type: git
+    url: https://github.com/Michi-Tsubaki/dynamixel-workbench.git
+    version: ros2-dynamixe-general-hw
+  jsk_roseus:
+    type: git
+    url: https://github.com/Michi-Tsubaki/jsk_roseus.git
+    version: ros2-beta

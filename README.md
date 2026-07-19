@@ -1,6 +1,6 @@
 # jsk_robot
 
-[![Build Status](https://travis-ci.com/jsk-ros-pkg/jsk_robot.svg)](https://travis-ci.com/jsk-ros-pkg/jsk_robot)
+[![ROS 2 Jazzy CI](https://github.com/Michi-Tsubaki/jsk_robot/actions/workflows/ros2_jazzy.yml/badge.svg?branch=ros2)](https://github.com/Michi-Tsubaki/jsk_robot/actions/workflows/ros2_jazzy.yml)
 
 
 ## Deb Build Status
