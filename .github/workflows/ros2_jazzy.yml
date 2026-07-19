@@ -27,11 +27,11 @@ jobs:
             -dynamixel-workbench/dynamixel_workbench
             -jsk_roseus/jsk_roseus
             -jsk_roseus/roseus_tutorials
-          BEFORE_INSTALL: >-
-            sudo apt-get update &&
-            sudo apt-get install -y software-properties-common &&
-            sudo add-apt-repository -y ppa:k-okada/euslisp &&
-            sudo apt-get update
+          BEFORE_INIT: >-
+            ici_asroot apt-get update &&
+            ici_asroot apt-get install -y software-properties-common &&
+            ici_asroot add-apt-repository -y ppa:k-okada/euslisp &&
+            ici_asroot apt-get update
           ADDITIONAL_DEBS: >-
             euslisp-dev
             jskeus-dev
