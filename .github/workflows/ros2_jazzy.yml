@@ -28,8 +28,9 @@ jobs:
             -jsk_roseus/jsk_roseus
             -jsk_roseus/roseus_tutorials
           BEFORE_INIT: >-
+            export DEBIAN_FRONTEND=noninteractive &&
             ici_asroot apt-get update &&
-            ici_asroot apt-get install -y software-properties-common &&
+            ici_asroot apt-get install -y --no-install-recommends software-properties-common &&
             ici_asroot add-apt-repository -y ppa:k-okada/euslisp &&
             ici_asroot apt-get update
           ADDITIONAL_DEBS: >-
@@ -38,3 +39,4 @@ jobs:
           ROSDEP_SKIP_KEYS: >-
             euslisp-dev
             jskeus-dev
+            rviz2
