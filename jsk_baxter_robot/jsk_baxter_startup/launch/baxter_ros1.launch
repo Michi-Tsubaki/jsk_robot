@@ -1,0 +1,15 @@
+<launch>
+  <!-- Run on the ROS 1 SDK host, not through ros2 launch. -->
+  <arg name="enable_robot" default="false"/>
+  <arg name="start_action_servers" default="true"/>
+  <node if="$(arg enable_robot)" pkg="baxter_tools" type="enable_robot.py"
+        name="baxter_enable" args="-e" output="screen"/>
+  <group if="$(arg start_action_servers)">
+    <node pkg="baxter_interface" type="joint_trajectory_action_server.py"
+          name="baxter_joint_trajectory" args="--mode position" output="screen"/>
+    <node pkg="baxter_interface" type="gripper_action_server.py"
+          name="baxter_gripper_action" output="screen"/>
+  </group>
+  <node pkg="jsk_baxter_startup" type="ros1_state_adapter.py"
+        name="baxter_standard_state" output="screen"/>
+</launch>

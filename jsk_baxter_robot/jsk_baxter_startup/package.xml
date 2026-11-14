@@ -1,51 +1,59 @@
 <?xml version="1.0"?>
-<package>
+<package format="3">
   <name>jsk_baxter_startup</name>
   <version>1.1.0</version>
   <description>The jsk_baxter_startup package</description>
   <maintainer email="inagaki@jsk.imi.i.u-tokyo.ac.jp">Yuto Inagaki</maintainer>
   <license>BSD</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>baxter_core_msgs</build_depend>
-  <build_depend>baxter_examples</build_depend>
-  <build_depend>baxter_description</build_depend>
-  <build_depend>baxter_interface</build_depend>
-  <build_depend>baxter_tools</build_depend>
-  <build_depend>checkerboard_detector</build_depend>
-  <build_depend>dynamic_tf_publisher</build_depend>
-  <build_depend>image_view</build_depend>
-  <build_depend>joy</build_depend>
-  <build_depend>openni_launch</build_depend>
-  <build_depend>roseus</build_depend>
-  <build_depend>rostwitter</build_depend>
-  <build_depend>sound_play</build_depend>
-  <build_depend>topic_tools</build_depend>
+  <buildtool_depend condition="$ROS_VERSION == 1">catkin</buildtool_depend>
+  <depend condition="$ROS_VERSION == 1">baxter_core_msgs</depend>
+  <depend condition="$ROS_VERSION == 1">baxter_examples</depend>
+  <depend condition="$ROS_VERSION == 1">baxter_description</depend>
+  <depend condition="$ROS_VERSION == 1">baxter_interface</depend>
+  <depend condition="$ROS_VERSION == 1">baxter_tools</depend>
+  <depend condition="$ROS_VERSION == 1">checkerboard_detector</depend>
+  <depend condition="$ROS_VERSION == 1">dynamic_tf_publisher</depend>
+  <depend condition="$ROS_VERSION == 1">image_view</depend>
+  <depend condition="$ROS_VERSION == 1">joy</depend>
+  <depend condition="$ROS_VERSION == 1">openni_launch</depend>
+  <depend condition="$ROS_VERSION == 1">roseus</depend>
+  <depend condition="$ROS_VERSION == 1">rostwitter</depend>
+  <depend condition="$ROS_VERSION == 1">sound_play</depend>
+  <depend condition="$ROS_VERSION == 1">topic_tools</depend>
 
-  <run_depend>baxter_core_msgs</run_depend>
-  <run_depend>baxter_description</run_depend>
-  <run_depend>baxter_examples</run_depend>
-  <run_depend>baxter_interface</run_depend>
-  <run_depend>baxter_tools</run_depend>
-  <run_depend>checkerboard_detector</run_depend>
-  <run_depend>dynamic_tf_publisher</run_depend>
-  <run_depend>image_transport</run_depend>
-  <run_depend>image_view</run_depend>
-  <run_depend>joy</run_depend>
-  <run_depend>jsk_interactive_marker</run_depend>
-  <run_depend>jsk_pcl_ros</run_depend>
-  <run_depend>libuvc_camera</run_depend>
-  <run_depend>openni_launch</run_depend>
-  <run_depend>realsense2_camera</run_depend>
-  <run_depend>respeaker_ros</run_depend>
-  <run_depend>roseus</run_depend>
-  <run_depend>rostwitter</run_depend>
-  <run_depend>softhand_ros</run_depend>
-  <run_depend>sound_play</run_depend>
-  <run_depend>tf</run_depend>
-  <run_depend>topic_tools</run_depend>
-  <run_depend>video_stream_opencv</run_depend>
+  <build_export_depend condition="$ROS_VERSION == 1">image_transport</build_export_depend>
+  <exec_depend condition="$ROS_VERSION == 1">image_transport</exec_depend>
+  <build_export_depend condition="$ROS_VERSION == 1">jsk_interactive_marker</build_export_depend>
+  <exec_depend condition="$ROS_VERSION == 1">jsk_interactive_marker</exec_depend>
+  <build_export_depend condition="$ROS_VERSION == 1">jsk_pcl_ros</build_export_depend>
+  <exec_depend condition="$ROS_VERSION == 1">jsk_pcl_ros</exec_depend>
+  <build_export_depend condition="$ROS_VERSION == 1">libuvc_camera</build_export_depend>
+  <exec_depend condition="$ROS_VERSION == 1">libuvc_camera</exec_depend>
+  <build_export_depend condition="$ROS_VERSION == 1">realsense2_camera</build_export_depend>
+  <exec_depend condition="$ROS_VERSION == 1">realsense2_camera</exec_depend>
+  <build_export_depend condition="$ROS_VERSION == 1">respeaker_ros</build_export_depend>
+  <exec_depend condition="$ROS_VERSION == 1">respeaker_ros</exec_depend>
+  <build_export_depend condition="$ROS_VERSION == 1">softhand_ros</build_export_depend>
+  <exec_depend condition="$ROS_VERSION == 1">softhand_ros</exec_depend>
+  <build_export_depend condition="$ROS_VERSION == 1">tf</build_export_depend>
+  <exec_depend condition="$ROS_VERSION == 1">tf</exec_depend>
+  <build_export_depend condition="$ROS_VERSION == 1">video_stream_opencv</build_export_depend>
+  <exec_depend condition="$ROS_VERSION == 1">video_stream_opencv</exec_depend>
+  <exec_depend condition="$ROS_VERSION == 1">rospy</exec_depend>
+  <exec_depend condition="$ROS_VERSION == 1">geometry_msgs</exec_depend>
+  <exec_depend condition="$ROS_VERSION == 1">sensor_msgs</exec_depend>
+  <exec_depend condition="$ROS_VERSION == 1">std_msgs</exec_depend>
+
+  <buildtool_depend condition="$ROS_VERSION == 2">ament_cmake</buildtool_depend>
+
+  <exec_depend condition="$ROS_VERSION == 2">launch</exec_depend>
+  <exec_depend condition="$ROS_VERSION == 2">launch_ros</exec_depend>
+  <exec_depend condition="$ROS_VERSION == 2">launch_xml</exec_depend>
+  <exec_depend condition="$ROS_VERSION == 2">ros1_bridge</exec_depend>
 
   <export>
+    <build_type condition="$ROS_VERSION == 1">catkin</build_type>
+    <build_type condition="$ROS_VERSION == 2">ament_cmake</build_type>
   </export>
 </package>

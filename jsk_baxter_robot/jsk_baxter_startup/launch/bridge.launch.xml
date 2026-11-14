@@ -1,0 +1,6 @@
+<launch>
+  <arg name="log_level" default="info"/>
+  <!-- Use the same action-enabled bridge as NEXTAGE. Exactly one bridge per graph. -->
+  <node pkg="ros1_bridge" exec="dynamic_bridge" name="baxter_dynamic_bridge"
+        output="screen" args="__name:=baxter_dynamic_bridge --ros-args --log-level $(var log_level)"/>
+</launch>

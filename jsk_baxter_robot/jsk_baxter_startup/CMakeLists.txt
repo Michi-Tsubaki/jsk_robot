@@ -1,3 +1,12 @@
+if("$ENV{ROS_VERSION}" EQUAL 2)
+  cmake_minimum_required(VERSION 3.8)
+  project(jsk_baxter_startup)
+  find_package(ament_cmake REQUIRED)
+  install(DIRECTORY launch config DESTINATION share/${PROJECT_NAME})
+  install(PROGRAMS scripts/bridge.sh DESTINATION lib/${PROJECT_NAME})
+  install(PROGRAMS scripts/ros1_state_adapter.py DESTINATION share/${PROJECT_NAME}/ros1)
+  ament_package()
+else() # if("$ENV{ROS_VERSION}" EQUAL 2)
 cmake_minimum_required(VERSION 2.8.3)
 project(jsk_baxter_startup)
 
@@ -23,3 +32,8 @@ install(DIRECTORY config jsk_baxter_joy jsk_baxter_lifelog jsk_baxter_moveit jsk
 
 install(FILES baxter.launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
+install(FILES launch/baxter_ros1.launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch)
+catkin_install_python(PROGRAMS scripts/ros1_state_adapter.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+endif() # if("$ENV{ROS_VERSION}" EQUAL 2)
