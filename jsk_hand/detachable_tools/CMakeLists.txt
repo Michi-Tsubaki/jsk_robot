@@ -14,6 +14,8 @@ project(detachable_tools)
 
 set(_python_entrypoint_scripts
   scripts/hand_command.py
+  scripts/tool_force_publisher.py
+  scripts/wrist_wrench_publisher.py
   scripts/joint_state_coupling_relay.py
   scripts/modular_hand_manager.py
   scripts/print_robot_description.py

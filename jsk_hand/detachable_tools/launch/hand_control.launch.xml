@@ -2,6 +2,11 @@
   <arg name="side" default="lhand" description="Hand side: lhand or rhand" />
   <arg name="namespace" default="$(var side)" />
   <arg name="tool" default="generic" description="Tool: generic, needle_holder, gripper, forceps, yubi" />
+  <arg name="publish_tool_force" default="true" />
+  <arg name="publish_wrist_wrench" default="true" />
+  <arg name="wrist_wrench_input" default="wrench_raw" />
+  <arg name="wrist_sensor_config" default="$(find-pkg-share detachable_tools)/config/wrist_sensors.json" />
+  <arg name="tool_force_input_unit" default="torque_nm" />
   <arg name="attached" default="true" />
   <arg name="detected_ids" default="unspecified" />
   <arg name="include_detacher" default="true" description="Activate the detacher motor" />
@@ -42,4 +47,11 @@
         pkg="detachable_tools" exec="static_transform_publisher_xyz_rpy.py"
         name="tool_mount_static_tf" namespace="$(var namespace)" output="screen"
         args="--xyz $(var static_xyz) --rpy $(var static_rpy) --frame-id $(var parent_frame) --child-frame-id $(var root_frame)" />
+  <node if="$(var publish_tool_force)" pkg="detachable_tools" exec="tool_force_publisher.py"
+        name="tool_force_publisher" namespace="$(var namespace)" output="screen"
+        args="--side $(var side) --input-unit $(var tool_force_input_unit)" />
+  <node if="$(var publish_wrist_wrench)" pkg="detachable_tools" exec="wrist_wrench_publisher.py"
+        name="wrist_wrench_publisher" namespace="$(var namespace)" output="screen"
+        args="--side $(var side) --config $(var wrist_sensor_config) --input-topic $(var wrist_wrench_input)" />
+
 </launch>

@@ -261,3 +261,50 @@ EusLisp:
 ```
 
 For real hardware, copy the configuration file and adjust the tag and tool transforms, camera TFs, observation poses, insertion direction, detach/attach currents and durations, and controller names to match your robot. Set `calibrated: true` and launch with `--hardware`.
+
+## Tool force telemetry (ROS 1 / ROS 2)
+
+`hand_control.launch` / `hand_control.launch.xml` starts `tool_force_publisher.py` by default (`publish_tool_force:=true`). It observes the selected tool's raw `joint_states` and `tool_state`; it never sends motor commands. The same portable estimator and tool profiles are exported from `surgenoid_sim/surgeon_sim/sensors`, with hashes in `config/tool_force/sync.json`. There is no dependency on any particular demo, tissue, wound, or motion schedule. A profile is currently supplied for the Pean; unsupported tools publish an invalid status.
+
+Default topics in each hand namespace:
+
+| Topic | Type | Meaning |
+| --- | --- | --- |
+| `joint_states` | `sensor_msgs/JointState` | Input drive position [rad], velocity [rad/s], output-shaft effort [N m]. Missing effort stays unavailable. |
+| `tool_state` | `diagnostic_msgs/DiagnosticArray` | Active tool, attachment, command joint and tool root frame from the manager. |
+| `tool_gravity` | `geometry_msgs/Vector3Stamped` | Optional fresh gravity acceleration [m/s²], already expressed in the active tool root frame. |
+| `tool_force` | `sensor_msgs/JointState` | Virtual prismatic opening coordinate: gap [m], gap speed [m/s], signed opening force [N]. |
+| `tool_force/status` | `diagnostic_msgs/DiagnosticArray` | Shared telemetry fields, input provenance, validity and calibration/compensation flags. |
+
+For example, the right-hand output is `/rhand/tool_force`. Its `effort` is a **force in N**, because this represents a virtual prismatic coordinate, not the drive revolute joint. `force_n` is conjugate to the jaw gap: `F = (tau - compensation) / (dg/dq)`. Equal and opposite forces act at the two jaws; this is the magnitude per jaw with opening-positive sign, not a doubled force or a 6-axis wrench. Closing load can be negative. `opening_force_n` in diagnostics is its positive part for opening-force plots. No contact-truth gate hides noise or empty-motion residuals.
+
+Diagnostics encode the shared fields as JSON values: `stamp_s`, `tool`, `side`, `current_a`, `effort_nm`, `position_rad`, `gap_m`, `jacobian_m_per_rad`, `compensation_nm`, `force_n`, `opening_force_n`, `valid`, `reason`, `source`, `calibrated`, `compensation_complete`. The additional `input_unit` value is plain text. Force is null in diagnostics / NaN in `JointState` when unavailable, stale (default 0.25 s), detached, out of profile range, current-saturated, or at a singular transmission. A tool change resets derivative history. `display_joint_states` is deliberately not an input: the display relay can fill absent efforts with zero.
+
+The default `tool_force_input_unit:=torque_nm` accepts already converted output-shaft torque and does not apply Kt again. Only if a backend explicitly puts current into the effort field, select `current_a` or `current_ma`. The conversion is `tau = Kt * (I - bias)`; the profile's Kt is after the motor's internal gearbox. Do not multiply the gearbox reduction twice. Motor families reporting load rather than measured current require a separately validated backend conversion.
+
+Friction, reflected inertia and CAD gravity compensation are tool properties in `config/tool_force/pean.json`. Full compensation requires fresh `tool_gravity` in the correct frame and consecutive velocity samples. Otherwise `compensation_complete=false`; numeric partial estimates carry WARN. `--profile-dir`, `--input-topic`, `--output-topic`, `--timeout-s` are available when running the node directly. Keep measured calibration profiles outside generated assets, as re-export overwrites generated defaults.
+
+The supplied Pean ROS control model uses `mock_components/GenericSystem`. Those readings are labelled `mock_joint_effort` (or `mock_joint_current`), never hardware measurements. Recognized Dynamixel plugins are labelled `hardware_joint_effort`; unspecified backends, including ones whose URDF lacks ROS 2 hardware metadata, remain `unverified_joint_effort`. The current profile is **uncalibrated**: constants, friction and masses need real measurements before interpreting estimates as actual tissue force. These flags are retained in telemetry. No motor IDs were invented or enabled by this telemetry feature.
+
+ROS 2 build/install and isolated transport are checked. The transport test covers effort-to-force conversion, mock provenance, absent effort, detachment, and timeout, with no motor commands:
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source /path/to/colcon_ws/install/setup.bash
+ROS_DOMAIN_ID=117 ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST \
+  python3 test/test_tool_force_ros2.py
+```
+
+This does not validate physical force accuracy. Hardware measurements and the ROS 1 live transport remain to be verified.
+
+### Six-axis wrist sensor interface
+
+`hand_control` also starts `wrist_wrench_publisher.py` (`publish_wrist_wrench:=true`). This separate observation interface is independent of the tool-opening estimator and does not turn a scalar jaw force into a six-axis wrench. Each hand reads `wrench_raw` and publishes `wrist_wrench`, both `geometry_msgs/WrenchStamped`, plus `wrist_wrench/status` diagnostics. Forces use N and moments use N m. Default full topics are `/lhand/wrist_wrench` and `/rhand/wrist_wrench`.
+
+Set `wrist_wrench_input` to the actual sensor driver's topic and `wrist_sensor_config` to a copy of `config/wrist_sensors.json`. This configuration specifies input/output frames, input provenance, calibrated flag, six-axis bias, sign and the fixed transform from input to output frame. Translation is the input origin in output coordinates; the transform applies `F_out = R F_in`, `T_out = R T_in + translation × F_out`. Canonical sign is the support wrench exerted by the arm on its distal assembly. Raw readings include gravity and inertia. The default configuration is uncalibrated and does not claim that a physical sensor has been connected. Frame mismatch, missing input, nonfinite data and stale timestamps produce invalid status and six NaNs, never fictitious zero load.
+
+The portable `wrench_telemetry.py` and sensor configuration are shared with Surgenoid Sim through the existing export command and `config/tool_force/sync.json`. The simulator registers sensors at the existing NEXTAGE wrist sensor frames in every scene; ordinary dynamics and kinematic reconstruction retain distinct `source` values. A sensor remains meaningful when a tool is detached, so its lifecycle is independent of the tool force stream.
+
+Run the node directly with `--log-jsonl /path/to/wrist.jsonl` to record the shared sensor contract: `kind=wrist_wrench`, `side`, `stamp_s`, `frame_id`, `force_n[3]`, `torque_nm[3]`, `valid`, `reason`, `source`, `calibrated`, `gravity_compensated`, `convention`. Each sensor sample is one JSON line. Surgenoid Sim's common plotter accepts this through `--wrist-telemetry` and an explicit `--wrist-time-offset`; it does not guess clock alignment or bridge stale samples.
+
+The isolated ROS 2 test `test/test_wrist_wrench_ros2.py` verifies both hands, all six values, provenance, frame rejection and timeout through actual pub/sub. Sensor force accuracy and the physical driver's frame/sign calibration remain unverified.

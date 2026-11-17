@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "sensors": {
+    "left": {
+      "body": "LARM_FTSENSOR_SENSOR_Link",
+      "load_roots": ["LARM_NEJINEJI_Link"],
+      "frame_id": "LARM_FTSENSOR_SENSOR_Link",
+      "input_frame": "LARM_FTSENSOR_SENSOR_Link",
+      "input_topic": "wrench_raw",
+      "source": "external_wrench_unverified",
+      "calibrated": false,
+      "sign": 1,
+      "bias": [0, 0, 0, 0, 0, 0],
+      "rotation": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+      "translation_m": [0, 0, 0]
+    },
+    "right": {
+      "body": "RARM_FTSENSOR_SENSOR_Link",
+      "load_roots": ["RARM_NEJINEJI_Link"],
+      "frame_id": "RARM_FTSENSOR_SENSOR_Link",
+      "input_frame": "RARM_FTSENSOR_SENSOR_Link",
+      "input_topic": "wrench_raw",
+      "source": "external_wrench_unverified",
+      "calibrated": false,
+      "sign": 1,
+      "bias": [0, 0, 0, 0, 0, 0],
+      "rotation": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+      "translation_m": [0, 0, 0]
+    }
+  }
+}
