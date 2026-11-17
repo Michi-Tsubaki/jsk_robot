@@ -1,5 +1,5 @@
 {
-  "source": "surgenoid_sim/surgeon_sim/tools/assets/simready_holder",
+  "source": "surgenoid_sim/meshes/tools/simready_holder",
   "units": "metres",
   "parts": {
     "fixed": {
