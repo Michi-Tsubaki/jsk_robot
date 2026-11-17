@@ -1,0 +1,11 @@
+couplings:
+- driver: rhand_joint
+  followers:
+  - joint: rhand_holder_jaw_joint
+    poly:
+    - 0
+    - 0.581031
+  - joint: rhand_holder_tip_joint
+    poly:
+    - 0
+    - 1.35269

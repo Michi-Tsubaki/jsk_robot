@@ -21,7 +21,7 @@ except Exception:  # pragma: no cover - used outside a sourced ROS env
 
 
 PACKAGE_NAME = "detachable_tools"
-TOOLS = ("gripper", "needle_holder")
+TOOLS = ("gripper", "needle_holder", "pean")
 VIEWS = {
     "front": {
         "direction": np.array([0.0, -1.0, 0.0]),
@@ -166,9 +166,9 @@ def link_color(link_name: str, tool: str) -> tuple[float, float, float]:
 def make_actor(mesh_path: Path, transform: np.ndarray, color: tuple[float, float, float]):
     if not mesh_path.exists():
         raise FileNotFoundError(mesh_path)
-    if mesh_path.suffix.lower() != ".stl":
+    if mesh_path.suffix.lower() not in (".stl", ".obj"):
         return None
-    reader = vtk.vtkSTLReader()
+    reader = vtk.vtkOBJReader() if mesh_path.suffix.lower() == ".obj" else vtk.vtkSTLReader()
     reader.SetFileName(str(mesh_path))
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(reader.GetOutputPort())
@@ -177,6 +177,9 @@ def make_actor(mesh_path: Path, transform: np.ndarray, color: tuple[float, float
     actor.SetUserTransform(vtk_transform(transform))
     actor.GetProperty().SetColor(*color)
     actor.GetProperty().SetInterpolationToPhong()
+    if "simready_holder" in mesh_path.parts or "pean" in mesh_path.parts:
+        actor.GetProperty().SetSpecular(0.85)
+        actor.GetProperty().SetSpecularPower(80)
     return actor
 
 
@@ -199,7 +202,11 @@ def actors_from_urdf(urdf_path: Path, tool: str, side: str) -> list[vtk.vtkActor
                 @ transform_from_origin(visual.find("origin"))
                 @ scale_matrix(mesh.get("scale"))
             )
-            actor = make_actor(mesh_path, transform, link_color(link_name, tool))
+            color = link_color(link_name, tool)
+            specified = visual.find("material/color")
+            if specified is not None:
+                color = tuple(float(v) for v in specified.get("rgba").split()[:3])
+            actor = make_actor(mesh_path, transform, color)
             if actor is not None:
                 actors.append(actor)
     return actors

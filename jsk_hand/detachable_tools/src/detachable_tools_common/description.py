@@ -39,6 +39,8 @@ _TOOL_ALIASES = {
     "needle-holder": "needle_holder",
     "needle_holder": "needle_holder",
     "holder": "needle_holder",
+    "pean": "pean",
+    "hemostat": "pean",
     "gripper": "gripper",
     "sesshi": "gripper",
     "setsushi": "gripper",
@@ -460,6 +462,8 @@ def _default_tip_link(side: str, tool: str, attached: bool) -> str:
         return f"{side}_detach_link_0"
     if tool == "needle_holder":
         return f"{side}_small_needle_holder_link2_1"
+    if tool == "pean":
+        return f"{side}_tip_link"
     if _MODEL_TOOL.get(tool, tool) == "gripper":
         return f"{side}_tip_link"
     return f"{side}_link"

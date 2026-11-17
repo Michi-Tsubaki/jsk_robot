@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!-- Named positions of the lhand hand motor (<side>_joint, rad) for each tool -->
+<?xml version='1.0' encoding='utf-8'?>
 <robot name="lhand">
   <group name="lhand_generic">
     <joint name="lhand_joint" />
@@ -35,15 +34,25 @@
     <joint name="lhand_joint" value="1.0" />
   </group_state>
   <group_state name="open" group="lhand_forceps">
-    <joint name="lhand_joint" value="-2.2" />
+    <joint name="lhand_joint" value="-2.483514896" />
   </group_state>
   <group_state name="close" group="lhand_forceps">
-    <joint name="lhand_joint" value="-3.0" />
+    <!-- Measured closed: -2.615437243 rad; add 10% of the open-to-close travel for preload. -->
+    <joint name="lhand_joint" value="-2.628629478" />
   </group_state>
   <group_state name="open_scissors" group="lhand_forceps">
     <joint name="lhand_joint" value="-0.8" />
   </group_state>
   <group_state name="close_scissors" group="lhand_forceps">
     <joint name="lhand_joint" value="-0.1" />
+  </group_state>
+  <group name="lhand_pean">
+    <joint name="lhand_joint" />
+  </group>
+  <group_state name="open" group="lhand_pean">
+    <joint name="lhand_joint" value="-0.17" />
+  </group_state>
+  <group_state name="close" group="lhand_pean">
+    <joint name="lhand_joint" value="0" />
   </group_state>
 </robot>

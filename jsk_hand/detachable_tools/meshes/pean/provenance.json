@@ -1,0 +1,43 @@
+{
+  "source": "https://huggingface.co/datasets/nvidia/simready-assets/tree/7879e0e50423290300ac20ecd6e727325f680b60/instrument_artery_forceps_b01",
+  "author": "NVIDIA",
+  "license": "CC-BY-4.0",
+  "modification": "Unscaled SimReady distal jaws registered to the original holder pivot; original drive, proximal handles and screw connector retained. TCP extended to actual jaw tips.",
+  "asset_type": "detachable Pean / straight artery-forceps derivative",
+  "distal_uniform_scale": 1.0,
+  "tip_midpoint_base_local_m": [
+    0.12057141841795116,
+    -0.011085532314509448,
+    -0.019625929319041276
+  ],
+  "preserved": [
+    "threaded connector",
+    "motor",
+    "linkage",
+    "hinges",
+    "body inertias"
+  ],
+  "physics": "Original inertias; convex mesh contact proxies, not calibrated grasp mechanics.",
+  "parts": {
+    "fixed": {
+      "tip_local_m": [
+        0.09230398453286688,
+        -0.004195612996074598,
+        1.6900439521022602e-05
+      ],
+      "triangles": 17606,
+      "sha256": "acd24d332f007989ea0b959a2a22fee64bceaa9f5bacd3fde8f783c65f2ab287",
+      "source_sha256": "96f2065e15f89601b74c077bed863eef788584820bf88215c22200ee38b96e77"
+    },
+    "moving": {
+      "tip_local_m": [
+        -0.05189176870321572,
+        -0.005549128903867288,
+        -0.001384232825583629
+      ],
+      "triangles": 12557,
+      "sha256": "4dbcdfdc6af6f83ed83fce22b2d20554b4a9bbdb8f4f464e8f9127c5ec08b2fa",
+      "source_sha256": "3d1e829f9109ee26444533a06684e895f7458829773870b07a1bca51e96a511d"
+    }
+  }
+}

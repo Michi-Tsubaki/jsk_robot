@@ -1,0 +1,13 @@
+{
+  "units": "metres",
+  "parts": {
+    "fixed": {
+      "source_sha256": "acd24d332f007989ea0b959a2a22fee64bceaa9f5bacd3fde8f783c65f2ab287",
+      "export_sha256": "fce2fc38c4d8f336d521a94ee477e90118746c5c87e29fd738809b62fbc6db99"
+    },
+    "moving": {
+      "source_sha256": "4dbcdfdc6af6f83ed83fce22b2d20554b4a9bbdb8f4f464e8f9127c5ec08b2fa",
+      "export_sha256": "599da7bf1ef54adef7559ad1206177ddec5429c49b3cee3bb9043efa149e074a"
+    }
+  }
+}

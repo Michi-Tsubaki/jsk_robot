@@ -1,0 +1,38 @@
+{
+  "description": "Original generated bevelled oval saddle, elongated seat and captive shoulder pin; illustrative visual adapter.",
+  "slot_endpoints_ring_local_m": [
+    [
+      0.07521329322,
+      0.04047535697
+    ],
+    [
+      0.07660984972,
+      0.03871550318
+    ]
+  ],
+  "slot_radius_m": 0.0028,
+  "pin_radius_m": 0.0023,
+  "link_eye_local_m": [
+    -0.0687,
+    0.0300882,
+    0.0115
+  ],
+  "simulation": "Meshes follow the original ring and link bodies; no added joints, constraints, inertia or contacts.",
+  "parts": {
+    "plate": {
+      "triangles": 2048,
+      "watertight": true,
+      "sha256": "b05cd787aacf7ea8b7ea42a83cb4617f5c50891bdf90bf64beec8ecb7c7e5f2a"
+    },
+    "pin": {
+      "triangles": 1728,
+      "watertight": true,
+      "sha256": "a58bc98c2d6b388391015c23a9d1abff5f5d6c990e971bd5e7ef976940ebcecb"
+    },
+    "screw": {
+      "triangles": 768,
+      "watertight": true,
+      "sha256": "bc95cea472c6958a0bd2352da52545711a27e4ae7a1b0c51b4c178e2ec913b55"
+    }
+  }
+}

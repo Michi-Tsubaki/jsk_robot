@@ -2,10 +2,44 @@
 
 Detachable surgical tools (gripper, needle holder, forceps) driven by Dynamixel motors, for ROS 1 and ROS 2.
 
+The left/right needle-holder descriptions and the standalone holder now share the
+SimReady-derived metal jaws and slotted ring-to-link adapter used in `surgenoid_sim`.
+The threaded mount, motor/linkage joints, inertias and controller calibration are
+retained. The adapter is a visual model; no new physical constraint is introduced.
+Meshes are in metres under `meshes/simready_holder`, with NVIDIA attribution,
+CC-BY-4.0 license, adapter design metadata and source/export hashes. The donor is
+an artery-forceps asset adapted to the original holder, not a dedicated clinical
+needle-holder model. OBJ/MTL provides the visuals and STL the jaw collision mesh.
+
+To resync from a `surgenoid_sim` checkout:
+
+```bash
+.venv/bin/python -m surgeon_sim.tools.export_detachable_holder --package /path/to/detachable_tools
+```
+
+The `pean` tool (alias `hemostat`) uses the same detachable screw, drive linkage,
+and ring adapter as the holder, with longer SimReady metal jaws: approximately
+52 mm from pivot to tip. Both hands include a dedicated URDF, tip frame, open/close
+states, and loop couplings. ROS 2 uses `mock_components/GenericSystem` for this
+new tool; it has no assigned physical motor IDs or hardware calibration.
+
+```bash
+# Model display only
+ros2 launch detachable_tools hand_model.launch.xml side:=rhand tool:=pean
+
+# From the surgenoid_sim checkout, after exporting the shared holder assets
+.venv/bin/python -m surgeon_sim.tools.export_detachable_pean --package /path/to/detachable_tools
+```
+
+In Surgenoid Sim, select `--right-tool pean` or `--left-tool pean`. The left-leg
+LVA demo uses the right-arm joints and the mounted jaw contact sites to drive
+local tissue exploration, with a swept nerve-distance guard.
+
 | Tool | Hardware | Model |
 | --- | --- | --- |
 | `gripper` | <img src="figs/real_hand.jpg" width="200"> | <img src="figs/sim_gripper_oblique.png" width="260"> |
 | `needle_holder` | <img src="figs/real_holder.jpg" width="200"> | <img src="figs/sim_needle_holder_oblique.png" width="260"> |
+| `pean` | Simulation model | <img src="figs/sim_pean_oblique.png" width="260"> |
 
 ## Setup
 

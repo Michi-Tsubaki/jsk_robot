@@ -1,0 +1,39 @@
+{
+  "source": "https://huggingface.co/datasets/nvidia/simready-assets/tree/7879e0e50423290300ac20ecd6e727325f680b60/instrument_artery_forceps_b01",
+  "author": "NVIDIA",
+  "license": "CC-BY-4.0",
+  "modification": "Distal jaws scaled and registered to original CAD TCP; original proximal handles retained with 2 mm overlap at the splice.",
+  "asset_type": "artery-forceps derivative, not a dedicated needle-holder asset",
+  "distal_uniform_scale": 0.42300120051332324,
+  "preserved": [
+    "threaded connector",
+    "motor",
+    "linkage",
+    "hinges",
+    "TCP",
+    "body inertias"
+  ],
+  "physics": "Original inertias; convex mesh contact proxies, not calibrated grasp mechanics.",
+  "parts": {
+    "fixed": {
+      "tip_local_m": [
+        0.06219654229944904,
+        -0.005899286772647488,
+        -6.235269325122682e-06
+      ],
+      "triangles": 17370,
+      "sha256": "3c2f1b56a0b0f7b1a98e7321d88f3f4e4fc4c4c27e44b42c0a8919cc784ec8c1",
+      "source_sha256": "96f2065e15f89601b74c077bed863eef788584820bf88215c22200ee38b96e77"
+    },
+    "moving": {
+      "tip_local_m": [
+        -0.021950280458219944,
+        -0.0023472881881390433,
+        -0.0013610971167374731
+      ],
+      "triangles": 12346,
+      "sha256": "fa2040d213b1c0cc2edd1aef5bb52b1e005c242adc245a574761522b3d8858f1",
+      "source_sha256": "3d1e829f9109ee26444533a06684e895f7458829773870b07a1bca51e96a511d"
+    }
+  }
+}

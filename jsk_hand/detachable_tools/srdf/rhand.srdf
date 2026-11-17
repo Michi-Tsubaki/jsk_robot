@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!-- Named positions of the rhand hand motor (<side>_joint, rad) for each tool -->
+<?xml version='1.0' encoding='utf-8'?>
 <robot name="rhand">
   <group name="rhand_generic">
     <joint name="rhand_joint" />
@@ -23,10 +22,11 @@
     <joint name="rhand_joint" value="-1.5" />
   </group_state>
   <group_state name="open" group="rhand_gripper">
-    <joint name="rhand_joint" value="0.0" />
+    <joint name="rhand_joint" value="-1.954291524" />
   </group_state>
   <group_state name="close" group="rhand_gripper">
-    <joint name="rhand_joint" value="-1.5" />
+    <!-- Measured closed: -0.796136029 rad; add 10% of the open-to-close travel for preload. -->
+    <joint name="rhand_joint" value="-0.680320480" />
   </group_state>
   <group_state name="open" group="rhand_needle_holder">
     <joint name="rhand_joint" value="-1.87" />
@@ -45,5 +45,14 @@
   </group_state>
   <group_state name="close_scissors" group="rhand_forceps">
     <joint name="rhand_joint" value="-0.1" />
+  </group_state>
+  <group name="rhand_pean">
+    <joint name="rhand_joint" />
+  </group>
+  <group_state name="open" group="rhand_pean">
+    <joint name="rhand_joint" value="-0.17" />
+  </group_state>
+  <group_state name="close" group="rhand_pean">
+    <joint name="rhand_joint" value="0" />
   </group_state>
 </robot>

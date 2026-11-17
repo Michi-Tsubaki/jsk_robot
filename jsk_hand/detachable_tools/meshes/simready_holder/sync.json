@@ -1,0 +1,26 @@
+{
+  "source": "surgenoid_sim/surgeon_sim/tools/assets/simready_holder",
+  "units": "metres",
+  "parts": {
+    "fixed": {
+      "source_sha256": "3c2f1b56a0b0f7b1a98e7321d88f3f4e4fc4c4c27e44b42c0a8919cc784ec8c1",
+      "export_sha256": "612e123a448da1d00bba330084bced88e9bed5b663f58436dae282a3928e03ad"
+    },
+    "moving": {
+      "source_sha256": "fa2040d213b1c0cc2edd1aef5bb52b1e005c242adc245a574761522b3d8858f1",
+      "export_sha256": "8b5bd6100103359eabb88d891908d5351f23112f705030096fc3f915d214c921"
+    },
+    "plate": {
+      "source_sha256": "b05cd787aacf7ea8b7ea42a83cb4617f5c50891bdf90bf64beec8ecb7c7e5f2a",
+      "export_sha256": "0c240c71c61f0e8ef636c287382efbdd7ceea711916d471fba18830c6eb8c473"
+    },
+    "pin": {
+      "source_sha256": "a58bc98c2d6b388391015c23a9d1abff5f5d6c990e971bd5e7ef976940ebcecb",
+      "export_sha256": "3d33e85ff3db97179701f4f879e6643807c315c4881039c0889cbe1421061cf9"
+    },
+    "screw": {
+      "source_sha256": "bc95cea472c6958a0bd2352da52545711a27e4ae7a1b0c51b4c178e2ec913b55",
+      "export_sha256": "550a8cac7d7e6c2b8d15ef4280f094032cc40878b3f1069393e0e5d9d483581f"
+    }
+  }
+}

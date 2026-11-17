@@ -53,6 +53,7 @@
   <depend condition="$ROS_VERSION == 2">builtin_interfaces</depend>
   <exec_depend condition="$ROS_VERSION == 2">dynamixel_hardware_interface</exec_depend>
   <exec_depend condition="$ROS_VERSION == 2">dynamixel_interfaces</exec_depend>
+  <exec_depend condition="$ROS_VERSION == 2">hardware_interface</exec_depend>
   <exec_depend condition="$ROS_VERSION == 2">joint_state_broadcaster</exec_depend>
   <exec_depend condition="$ROS_VERSION == 2">controller_manager_msgs</exec_depend>
   <exec_depend condition="$ROS_VERSION == 2">lifecycle_msgs</exec_depend>
